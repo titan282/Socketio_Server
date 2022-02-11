@@ -1,0 +1,18 @@
+{
+    "sourceFile": "main.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1644501351647,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1644501351647,
+            "name": "Commit-0",
+            "content": "const express = require('express');\r\nconst app = express();\r\nconst http = require('http');\r\nconst server = http.createServer(app);\r\nconst { Server } = require(\"socket.io\");\r\nconst io = new Server(server);\r\nconst db = require('./mongodb/db');\r\nconst Msg = require('./mongodb/model/message.js');\r\ndb.connect();\r\n\r\nserver.listen(3000, () => {\r\n  console.log('listening on http://localhost:3000');\r\n});\r\napp.get('/', (req, res) => {\r\n  res.sendFile(__dirname + '/index.html');\r\n});\r\n\r\nio.on('connection', (socket) => {\r\n  console.log('a user connected');\r\n  socket.on('disconnect', () => {\r\n    console.log('user disconnected');\r\n  });\r\n  socket.on('chat message', (msg) => {\r\n    const message = new Msg({isFall:true})\r\n    console.log('message: ' + msg);\r\n    message.save().then(() => {\r\n      io.emit('chat message', \"Người nhà của bạn đang bị ngã\");\r\n    })\r\n  });\r\n  socket.broadcast.emit('hi');\r\n});\r\n\r\n"
+        }
+    ]
+}
